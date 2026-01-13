@@ -6,6 +6,11 @@ const {ServerConfig, Logger} =require('./config') //if importing an index.js fil
 
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({extended: true})); //to parse the body of the request if it is in the form of x-www-form-urlencoded
+//extended: true -> uses qs library to parse the body of the request 
+//extended: false -> uses querystring library to parse the body of the request
+//qs library is a more powerful library than querystring library as it can parse nested objects and arrays.
 
 app.use('/api' , apiRoutes);
 

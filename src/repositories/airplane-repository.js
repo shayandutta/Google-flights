@@ -1,4 +1,4 @@
-const {CrudRepository} = require('./crud-repository');
+const CrudRepository = require('./crud-repository');
 const {Airplane} = require('../models');
 
 
