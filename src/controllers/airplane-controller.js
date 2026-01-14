@@ -52,9 +52,25 @@ async function getAirplane(req, res){
     }
 }
 
+async function deleteAirplane(req, res){
+    try{
+        const deletedAirplane = await AirplaneService.deleteAirplane(req.params.id);
+        SuccessResponse.data = deletedAirplane;
+        return res
+        .status(StatusCodes.OK)
+        .json(SuccessResponse);
+    }catch(error){
+        ErrorResponse.error=error;
+        return res
+        .status(error.statusCode)
+        .json(ErrorResponse);
+    }
+}
+
 
 module.exports = {
     createAirplane,
     getAirplanes,
-    getAirplane
+    getAirplane,
+    deleteAirplane
 }
