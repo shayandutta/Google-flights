@@ -1,21 +1,17 @@
 const { StatusCodes } = require("http-status-codes");
 
+const {ErrorResponse} = require('../utils/common')
+
 function validateCreateRequest(req, res, next){
     if(!req.body.modelNumber){
-        return res.status(StatusCodes.BAD_REQUEST).json({
-            success:false,
-            message:"Model number is required",
-            error: {explanation:"Model number is required"},
-            data: {}
-        });
+        ErrorResponse.message = "Something went wrong while creating an airplane";
+        ErrorResponse.error = {explanation: "Model number is required"};
+        return res.status(StatusCodes.BAD_REQUEST).json(ErrorResponse);
     }
     if(!req.body.capacity){
-        return res.status(StatusCodes.BAD_REQUEST).json({
-            success:false,
-            message:"Capacity is required",
-            error: {explanation:"Capacity is required"},
-            data: {}
-        });
+        ErrorResponse.message = "Something went wrong while creating an airplane";
+        ErrorResponse.error = {explanation: "Capacity is required"};
+        return res.status(StatusCodes.BAD_REQUEST).json(ErrorResponse);
     }
     next();
 }

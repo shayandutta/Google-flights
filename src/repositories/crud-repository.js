@@ -7,62 +7,36 @@ class CrudRepository {
 
     //data is an object
     async create(data){
-        try{
             const response = await this.model.create(data);
             return response;
-        }catch(error){
-            Logger.error("Something went wrong in the crud repository layer: create");
-            throw error;
-        }
     }
 
     async destroy(data){
-        try{
-            const response = await this.model.destroy({
-                where: {
-                    id: data
-                }
-            });
-            return response;
-        }
-        catch(error){
-            Logger.error("Something went wrong in the crud repository layer: destroy");
-            throw error;
-        }
+        const response = await this.model.destroy({
+            where: {
+                id: data
+            }
+        });
+        return response;
     }
 
     async get(data){
-        try{
-            const response = await this.model.findByPK(data);
-            return response;
-        }catch(error){
-            Logger.error("Something went wrong in the crud repository layer: get");
-            throw error;
-        }
+        const response = await this.model.findByPK(data);
+        return response;
     }
 
     async getAll(){
-        try{
-            const response = await this.model.findAll();
-            return response;
-        }catch(error){
-            Logger.error("Something went wrong in the crud repository layer: getAll");
-            throw error;
-        }
+        const response = await this.model.findAll();
+        return response;
     }
 
     async update(data, id){ //update with the data and update to the id
-        try{
-            const response = await this.model.update(data, {
-                where: {
-                    id: id
-                }
-            });
-            return response;
-        }catch(error){
-            Logger.error("Something went wrong in the crud repository layer: update");
-            throw error;
-        }
+        const response = await this.model.update(data, {
+            where: {
+                id: id
+            }
+        });
+        return response;
     }
 }
 
