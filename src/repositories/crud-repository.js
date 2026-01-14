@@ -8,7 +8,7 @@ class CrudRepository {
     //data is an object
     async create(data){
             const response = await this.model.create(data);
-            return response;
+            return response; //return the response to the service
     }
 
     async destroy(data){
@@ -17,7 +17,7 @@ class CrudRepository {
                 id: data
             }
         });
-        return response;
+        return response; //return the response to the service
     }
 
     async get(data){

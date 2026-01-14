@@ -15,7 +15,7 @@ async function createAirplane(req, res){
     }catch(error){
         ErrorResponse.error = error;
         return res
-        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .status(error.statusCode) //statusCode is coming from the AppError class  object in the service layer
         .json(ErrorResponse);
     }
 }
@@ -38,5 +38,6 @@ async function getAirplanes(req, res){
 
 
 module.exports = {
-    createAirplane
+    createAirplane,
+    getAirplanes
 }
