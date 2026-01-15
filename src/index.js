@@ -3,6 +3,7 @@ const express = require('express');
 const apiRoutes = require('./routes')   //named import from the routes directory index.js file
 
 const {ServerConfig, Logger} =require('./config') //if importing an index.js file, we can omit the index.js from the path, as long as we import from the directory name.
+const { swaggerUi, swaggerSpec } = require('./config/swagger-config');
 
 
 const app = express();
@@ -11,6 +12,9 @@ app.use(express.urlencoded({extended: true})); //to parse the body of the reques
 //extended: true -> uses qs library to parse the body of the request 
 //extended: false -> uses querystring library to parse the body of the request
 //qs library is a more powerful library than querystring library as it can parse nested objects and arrays.
+
+// Swagger Documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/api' , apiRoutes);
 
