@@ -11,6 +11,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.belongsTo(models.City,  //this -> airport model belongs to the City model -> Airport has a city, (one to one relationship)
+        {
+          foreignKey: 'cityId', //foreignKey is the column name in the Airport table that references the City table
+          onDelete: 'CASCADE', //onDelete is the action to take when the City is deleted
+          onUpdate: 'CASCADE' //onUpdate is the action to take when the City is updated
+        })
     }
   }
   Airport.init({
