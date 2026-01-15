@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { CityController } = require("../../controllers");
 const { CityMiddleware } = require("../../middlewares");
+const { validateCreateCity } = require("../../middlewares/city-middleware");
 
 /**
  * @swagger
@@ -56,5 +57,7 @@ const { CityMiddleware } = require("../../middlewares");
 router.post("/", CityMiddleware.validateCreateCity, CityController.createCity);
 
 router.delete("/:id", CityController.deleteCity);
+
+router.patch("/:id", validateCreateCity, CityController.updateCity);
 
 module.exports = router;
