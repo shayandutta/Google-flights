@@ -15,7 +15,6 @@ module.exports = (sequelize, DataTypes) => {
         {
           foreignKey: 'cityId', //foreignKey is the column name in the Airport table that references the City table
           onDelete: 'CASCADE', //onDelete is the action to take when the City is deleted
-          onUpdate: 'CASCADE' //onUpdate is the action to take when the City is updated
         })
     }
   }

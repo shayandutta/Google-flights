@@ -18,7 +18,24 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/api' , apiRoutes);
 
-app.listen(ServerConfig.PORT, ()=>{
+app.listen(ServerConfig.PORT, async()=>{
     console.log(`Server is running on port ${ServerConfig.PORT}`);
-    // Logger.info("successfully started the server", {}); //info -> level, message -> message to log, label -> label to log, timestamp -> timestamp to log
+
+    //bad code alert -> this part is to find the power of ORMs
+    //if we setup model level constraints like hasmany, belongsTo etc., then sequelize will on the go creates some functions for you  by default that we never wrote, but can use directly using the models.
+    // const {City, Airport} = require('./models');
+    // const city = await City.findByPk(2);
+    // console.log(city);
+    // const airport = await Airport.create({name: "Kampegowda Airport", code: "BLR", cityId: 2});
+    // const airport = await city.createAirport({name: "some Airport", code: "SOM"}); //camel case is important here, as sequelize will create a function for you by default that we never wrote, but can use directly using the models.
+    // console.log(airport);
+    // const city = await City.findByPk(3);
+    // const airport = await city.createAirport({name: "Margherita Airport", code:"MRG"})
+    // console.log(airport)
+    // console.log(city);
+    // await City.destroy({
+    //     where:{
+    //         id: 3
+    //     }
+    // })
 })
