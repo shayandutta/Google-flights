@@ -43,9 +43,9 @@ async function updateCity(data, id){
     }catch(error){
         // console.log(error);
         if(error.statusCode == StatusCodes.NOT_FOUND){
-            throw new AppError('The city you requested to delete is not present', error.statusCode);
+            throw new AppError('The city you requested to update is not present', error.statusCode);
         }
-        throw new AppError('Cannot delete city', error.statusCode);
+        throw new AppError('Cannot update city', error.statusCode);
     }
 }
 
