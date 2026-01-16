@@ -28,6 +28,10 @@ const options = {
         name: "Cities",
         description: "City management endpoints",
       },
+      {
+        name: "Airports",
+        description: "Airport management endpoints",
+      },
     ],
     components: {
       schemas: {
@@ -87,6 +91,47 @@ const options = {
               type: "string",
               format: "date-time",
               description: "Timestamp when the city was last updated",
+            },
+          },
+        },
+        Airport: {
+          type: "object",
+          required: ["name", "code", "cityId"],
+          properties: {
+            id: {
+              type: "integer",
+              description: "Auto-generated airport ID",
+              example: 1,
+            },
+            name: {
+              type: "string",
+              description: "Name of the airport",
+              example: "Kempegowda International Airport",
+            },
+            code: {
+              type: "string",
+              description: "Airport code (IATA code) - unique identifier",
+              example: "BLR",
+            },
+            address: {
+              type: "string",
+              description: "Address of the airport",
+              example: "Bangalore, India",
+            },
+            cityId: {
+              type: "integer",
+              description: "ID of the city where the airport is located",
+              example: 2,
+            },
+            createdAt: {
+              type: "string",
+              format: "date-time",
+              description: "Timestamp when the airport was created",
+            },
+            updatedAt: {
+              type: "string",
+              format: "date-time",
+              description: "Timestamp when the airport was last updated",
             },
           },
         },
