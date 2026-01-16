@@ -4,5 +4,6 @@ const { FlightMiddleware } = require('../../middlewares');
 const router = express.Router();
 
 router.post("/", FlightMiddleware.validateCreateFlight, FlightController.createFlight);
+router.delete("/:id", FlightController.deleteFlight);
 
 module.exports = router;

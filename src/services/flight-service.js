@@ -29,6 +29,19 @@ async function createFlight(data){
 }
 
 
+async function deleteFlight(id){
+    try{
+        const deletedFlight = await flightRepository.destroy(id);
+        return deletedFlight;
+    }catch(error){
+        if(error.statusCode == StatusCodes.NOT_FOUND){
+            throw new AppError("The flight you requested to delete could not be found", error.statusCode);
+        }
+        throw new AppError("Cannot delete flight", StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+}
+
 module.exports = {
-    createFlight
+    createFlight,
+    deleteFlight
 }
