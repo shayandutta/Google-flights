@@ -1,5 +1,6 @@
 const CrudRepository = require('./crud-repository')
-const {Flight} = require('../models')
+const {Flight, Airplane, Airport} = require('../models')
+const {Sequelize} = require('sequelize')
 
 class FlightRepository extends CrudRepository{
     constructor(){
@@ -14,10 +15,38 @@ class FlightRepository extends CrudRepository{
             where: filter, //filter is an object that contains the filter parameters, where the key is the column name and the value is the value of the column
             //how where works is that it will filter the flights by the filter parameters
             //so if the filter is {departureAirportId: 1, arrivalAirportId: 2}, then the flights will be filtered by the departureAirportId and arrivalAirportId
-            order: sortFilter //sortFilter is an array of arrays, it will be like this: [['departureTime', 'ASC'], ['price', 'DESC']]
+            order: sortFilter ,//sortFilter is an array of arrays, it will be like this: [['departureTime', 'ASC'], ['price', 'DESC']]
             //how order works is that it will sort the flights by the sort parameters
             //so if the sortFilter is [['departureTime', 'ASC'], ['price', 'DESC']], then the flights will be sorted by departureTime in ascending order and price in descending order
-            })
+            include: [
+                //this one is simple because the association is done on the primary key of the Airplane table
+                {
+                    model: Airplane,
+                    required: true,//requied : true means that the flight must have an airplane
+                    as: 'airplaneDetails',
+                },
+                //this one is more complex because the association is done on the code column of the Airport table
+                {
+                    model: Airport,
+                    required: true,
+                    as: 'departureAirport',
+                    on : { //on is used to inner join the Flight and Airport tables on the code column of the Airport table
+                        col1: Sequelize.where(Sequelize.col('Flight.departureAirportId'), '=', Sequelize.col("departureAirport.code")), // col1 is the column name in the Flight table that is being joined with the Airport table
+                        //Sequelize.col is used to get the column name from the Flight table
+                        //Sequelize.where is used to compare the column values
+                        //Sequelize.col("departureAirport.code") is used to get the column name from the Airport table, "departureAirport" is the alias of the Airport table
+                    },
+                },
+                {
+                    model: Airport,
+                    required: true,
+                    as: 'arrivalAirport',
+                    on: {
+                        col1:Sequelize.where(Sequelize.col('Flight.arrivalAirportId'), '=', Sequelize.col("arrivalAirport.code")),
+                    }
+                }
+            ]
+        })
         return response;
     }
 }
