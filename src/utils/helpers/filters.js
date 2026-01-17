@@ -46,7 +46,7 @@ function getFlightFilters(query){
     if(query.sort){
          const params = query.sort.split(','); //params -> is an array of strings, it will be like this: [departureTime_ASC, price_DESC] 
          //params is an array because when we split the string by comma, we get an array of strings
-        const sortFilters = params.map((param)=> 
+        const sortFilters = params.map((param)=>   //sortFilters is an array of arrays, it will be like this: [['departureTime', 'ASC'], ['price', 'DESC']]
         param.split('_'));
         sortFilter = sortFilters;
     }
