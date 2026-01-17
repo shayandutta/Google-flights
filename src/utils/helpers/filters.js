@@ -41,8 +41,18 @@ function getFlightFilters(query){
         }
     }
 
+    let sortFilter = []
+    //sorting the flights by the price
+    if(query.sort){
+         const params = query.sort.split(','); //params -> is an array of strings, it will be like this: [departureTime_ASC, price_DESC] 
+         //params is an array because when we split the string by comma, we get an array of strings
+        const sortFilters = params.map((param)=> 
+        param.split('_'));
+        sortFilter = sortFilters;
+    }
 
-    return customFilter;
+    // console.log(sortFilter);
+    return {customFilter, sortFilter}; //return the customFilter and sortFilter to the service in an object, this is how we return multiple values from a function in JavaScript
 }
 
 

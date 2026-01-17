@@ -9,9 +9,10 @@ class FlightRepository extends CrudRepository{
     //getAllFlights is a custom method that is not implemented in the CrudRepository class
     //filter is an object that contains the filter parameters
     //this is used to implement flight search filters 
-    async getAllFlights(filter){
+    async getAllFlights(filter, sortFilter){
         const response = await Flight.findAll({
-            where: filter
+            where: filter,
+            order: sortFilter
         })
         return response;
     }
