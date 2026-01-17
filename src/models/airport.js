@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         {
           foreignKey: 'cityId', //foreignKey is the column name in the Airport table that references the City table
           onDelete: 'CASCADE', //onDelete is the action to take when the City is deleted
+          as: 'cityDetails', //this alias is used in the flight-repository.js file to join the Flight and City tables
         })
         this.hasMany(models.Flight,{
           foreignKey: 'departureAirportId',
