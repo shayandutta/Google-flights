@@ -46,7 +46,7 @@ async function deleteFlight(id){
 }
 
 //MOVED ALL THE FILTERS LOGIC TO THE HELPER FUNCTION -> /src/utils/helpers/filters.js
-async function getAllFlights(query){ //we are going to get the query parameters from the request body
+async function getFlights(query){ //we are going to get the query parameters from the request body
     // let customFilter = {}; //customFilter is an object that contains the custom filter parameters -> departureAirportId and arrivalAirportId
     // //1 -> trips=MUM-DEL
     // if(query.trips){
@@ -102,5 +102,11 @@ async function getAllFlights(query){ //we are going to get the query parameters 
 module.exports = {
     createFlight,
     deleteFlight,
-    getAllFlights
+    getFlights
 }
+
+
+
+//naming convention can be improved between repository and service layers.
+//for the flights api, the name of both the repository and service are same -> getAllFlights
+//changed the name of the service function to getFlights to avoid confusion.

@@ -45,7 +45,7 @@ async function deleteFlight(req, res){
 
 async function getAllFlights(req, res){
     try{
-        const flights = await FlightService.getAllFlights(req.query);
+        const flights = await FlightService.getFlights(req.query);
         SuccessResponse.data = flights;
         return res
         .status(StatusCodes.OK)
