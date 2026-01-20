@@ -2,6 +2,8 @@ const CrudRepository = require('./crud-repository')
 const {Flight, Airplane, Airport, City} = require('../models')
 const {Sequelize} = require('sequelize')
 
+const db = require('../models')
+
 class FlightRepository extends CrudRepository{
     constructor(){
         super(Flight);
@@ -62,6 +64,24 @@ class FlightRepository extends CrudRepository{
             ]
         })
         return response;
+    }
+
+    //this function is used to update the remaining seats of a flight
+    //flightId is the id of the flight
+    //seats is the number of seats to update
+    //dec is a boolean value that indicates if the seats should be decremented or incremented
+    //if dec is true, the seats will be decremented
+    //if dec is false, the seats will be incremented
+    async updateRemainingSeats(flightId, seats, dec=true){
+        await db.sequelize.query(`SELECT * FROM Flights WHERE Flights.id = ${flightId} FOR UPDATE ;`); //FOR UPDATE is used to lock the flight row for the current transaction( pessimistic locking)
+        //pessimistic locking assumes conflicts are common, locking the row for the current transaction to prevent anyone else from changing it until the transaction finishes.
+        const flight = await Flight.findByPk(flightId);
+        if(dec){
+            await flight.decrement('totalSeats', {by: seats}); //decrement the total seats by the number of seats(needed to be booked)
+        }else{
+            await flight.increment('totalSeats', {by: seats})
+        }
+        return flight;
     }
 }
 

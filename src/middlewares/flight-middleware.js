@@ -63,6 +63,19 @@ async function validateCreateFlight(req, res, next){
 }
 
 
+function validateUpdateSeatsRequest(req, res, next){
+    if(!req.body.seats){
+        ErrorResponse.message = "Something went wrong while updating the seats";
+        ErrorResponse.error = new AppError(['seats is required'], StatusCodes.BAD_REQUEST);
+        return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json(ErrorResponse);
+    }
+    next();
+}
+
+
 module.exports = {
-    validateCreateFlight
+    validateCreateFlight,
+    validateUpdateSeatsRequest
 };
