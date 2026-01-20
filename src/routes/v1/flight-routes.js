@@ -199,6 +199,51 @@ router.get("/", FlightController.getAllFlights);
  */
 router.delete("/:id", FlightController.deleteFlight);
 
+/**
+ * @swagger
+ * /api/v1/flights/{id}:
+ *   get:
+ *     summary: Get a flight by ID
+ *     tags: [Flights]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Flight ID
+ *         example: 1
+ *     responses:
+ *       200:
+ *         description: Flight details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "Successfully completed the request"
+ *                 data:
+ *                   $ref: '#/components/schemas/Flight'
+ *                 error:
+ *                   type: object
+ *       404:
+ *         description: Flight not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 router.get("/:id", FlightController.getFlight)
 
 module.exports = router;
