@@ -4,6 +4,8 @@ const {Sequelize} = require('sequelize')
 
 const db = require('../models')
 
+const {addRowLockOnFlights} = require('./queries')
+
 class FlightRepository extends CrudRepository{
     constructor(){
         super(Flight);
@@ -73,7 +75,7 @@ class FlightRepository extends CrudRepository{
     //if dec is true, the seats will be decremented
     //if dec is false, the seats will be incremented
     async updateRemainingSeats(flightId, seats, dec=true){
-        await db.sequelize.query(`SELECT * FROM Flights WHERE Flights.id = ${flightId} FOR UPDATE ;`); //FOR UPDATE is used to lock the flight row for the current transaction( pessimistic locking)
+        await db.sequelize.query(addRowLockOnFlights(flightId)); //FOR UPDATE is used to lock the flight row for the current transaction( pessimistic locking)
         //pessimistic locking assumes conflicts are common, locking the row for the current transaction to prevent anyone else from changing it until the transaction finishes.
         const flight = await Flight.findByPk(flightId);
         if(dec){
