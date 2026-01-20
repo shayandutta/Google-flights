@@ -46,51 +46,8 @@ async function deleteFlight(id){
 }
 
 //MOVED ALL THE FILTERS LOGIC TO THE HELPER FUNCTION -> /src/utils/helpers/filters.js
-async function getFlights(query){ //we are going to get the query parameters from the request body
-    // let customFilter = {}; //customFilter is an object that contains the custom filter parameters -> departureAirportId and arrivalAirportId
-    // //1 -> trips=MUM-DEL
-    // if(query.trips){
-    //     [departureAirportId, arrivalAirportId] = query.trips.split('-'); // split the trips string into two parts and store them in the departureAirportId and arrivalAirportId variables
-    //     customFilter.departureAirportId = departureAirportId; // set the departureAirportId in the customFilter object
-    //     customFilter.arrivalAirportId = arrivalAirportId; // set the arrivalAirportId in the customFilter object
-    //     //TODO: Add a check to see if the departureAirportId and arrivalAirportId are not same
-    // }
-
-    // if(query.price){
-    //     [minPrice, maxPrice] = query.price.split('-');
-    //     //cannot use customFilter.minPrice = minPrice; and customFilter.maxPrice = maxPrice; as it will not work with the sequelize query builder
-    //     //we need to use the Op.gte and Op.lte operators to filter the prices
-    //     // customFilter.minPrice = minPrice;
-    //     // customFilter.maxPrice = maxPrice;
-    //     customFilter.price = { 
-    //         [Op.between]: [(minPrice == undefined) ? 0: minPrice, (maxPrice == undefined) ? 20000: maxPrice]  // if maxPrice is undefined(user did not provide a max price), set it to 20000
-    //     } // Op.between is a operator that filters the prices between the minPrice and maxPrice
-
-
-    //     // console.log(customFilter); -> output will be like this:
-
-    //     // {
-    //     //     departureAirportId: 'MUM',
-    //     //     arrivalAirportId: 'LGB',
-    //     //     price: { Symbol(between): [ '5000', '9000' ] }
-    //     //   }
-    // }
-
-    // //travellers is the number of travellers the user is booking the flight for, and totalSeats if the total remaining seats in the flights. 
-    // // So we need to filter out those flights where totalSeats is greater than or equal to the number of travellers.
-    // if(query.travellers){
-    //     customFilter.totalSeats = {
-    //         [Op.gte]:query.travellers //gte is greater than or equal to
-    //     }
-    // }
-    // try{
-    //     const flights = await flightRepository.getAllFlights(customFilter);
-    //     return flights;
-    // }catch(error){
-    //     throw new AppError("Cannot fetch data of all the flights", StatusCodes.INTERNAL_SERVER_ERROR);
-    // }
-
-    const {customFilter, sortFilter} = getFlightFilters(query); // destructuring the customFilter and sortFilter from the object returned by the getFlightFilters function
+async function getFlights(query){ 
+    const {customFilter, sortFilter} = getFlightFilters(query); // destructuring the customFilter and sortFilter from the object returned by the getFlightFilters function 
     try{
         const flights = await flightRepository.getAllFlights(customFilter, sortFilter);
         return flights;
@@ -99,10 +56,24 @@ async function getFlights(query){ //we are going to get the query parameters fro
     }
 }
 
+//this function is used to get a single flight by its id
+async function getFlight(id){
+    try{
+        const flight = await flightRepository.get(id);
+        return flight;
+    }catch(error){
+        if(error.statusCode == StatusCodes.NOT_FOUND){
+            throw new AppError("The flight you requested is not present", error.statusCode);
+        }
+        throw new AppError("Cannot fetch data of the flight", StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+}
+
 module.exports = {
     createFlight,
     deleteFlight,
-    getFlights
+    getFlights,
+    getFlight
 }
 
 

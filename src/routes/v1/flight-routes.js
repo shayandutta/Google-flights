@@ -199,4 +199,6 @@ router.get("/", FlightController.getAllFlights);
  */
 router.delete("/:id", FlightController.deleteFlight);
 
+router.get("/:id", FlightController.getFlight)
+
 module.exports = router;
