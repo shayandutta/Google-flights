@@ -75,19 +75,20 @@ class FlightRepository extends CrudRepository{
     //if dec is true, the seats will be decremented
     //if dec is false, the seats will be incremented
     async updateRemainingSeats(flightId, seats, dec=true){
-        const transaction = await db.sequelize.transaction();  //transaction initialization
+        const t = await db.sequelize.transaction();  //transaction initialization
         try{
             await db.sequelize.query(addRowLockOnFlights(flightId)); //FOR UPDATE is used to lock the flight row for the current transaction( pessimistic locking)
             //pessimistic locking assumes conflicts are common, locking the row for the current transaction to prevent anyone else from changing it until the transaction finishes.
             const flight = await Flight.findByPk(flightId);
             if(dec){
-                await flight.decrement('totalSeats', {by: seats}, {transaction:transaction}); //transaction argument -> this query will be executed in the transaction -> rollback will be applied if the query fails
+                await flight.decrement('totalSeats', {by: seats}, {transaction : t}); //transaction argument -> this query will be executed in the transaction -> rollback will be applied if the query fails
             }else{
-                await flight.increment('totalSeats', {by: seats}, {transaction:transaction}); 
+                await flight.increment('totalSeats', {by: seats}, {transaction : t}); 
             }
+            await t.commit();
             return flight;
         }catch(error){
-            await transaction.rollback();
+            await t.rollback();
             throw error;
         }
     }
