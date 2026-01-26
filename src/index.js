@@ -17,6 +17,7 @@ app.use(express.urlencoded({extended: true})); //to parse the body of the reques
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/api' , apiRoutes);
+app.use('/flights-service', apiRoutes); //this is the service name that will be used to identify the service in the load balancer -> through reverse proxy on api gateway
 
 app.listen(ServerConfig.PORT, ()=>{
     console.log(`Server is running on port ${ServerConfig.PORT}`);

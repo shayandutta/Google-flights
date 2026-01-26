@@ -5,7 +5,7 @@ const info = (req, res)=>{
     .status(StatusCodes.OK) //not plain raw status code, but a status code object from the http-status-codes package
     .json({
         success: true,
-        message: 'API is live',
+        message: 'Flights API is live',
         error: {},
         data: {}
     })
